@@ -8,7 +8,7 @@ template:
 pdf-generator:
     temp-dir: ./data/temp-pdfs
 object-storage:
-    endpoint: http://vom-assistant.hopto.org:9000
-    clientKey: demo
-    clientSecret: demo!123
-    defaultBucket: invoices
+    endpoint: ${OBJECT_STORAGE_ENDPOINT:http://vom-assistant.hopto.org:9000}
+    clientKey: ${OBJECT_STORAGE_CLIENT_KEY:demo}
+    clientSecret: ${OBJECT_STORAGE_CLIENT_SECRET:demo!123}
+    defaultBucket: ${OBJECT_STORAGE_CLIENT_DEFAULT_BUCKET:generated-pdfs}
