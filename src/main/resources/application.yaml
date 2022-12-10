@@ -1,0 +1,14 @@
+server.port: ${PORT:8080}
+springdoc:
+    api-docs.path: /docs
+    swagger-ui.path: /docs-ui
+template:
+    variableMappings:
+        invoice: invoice
+pdf-generator:
+    temp-dir: ./data/temp-pdfs
+object-storage:
+    endpoint: http://vom-assistant.hopto.org:9000
+    clientKey: demo
+    clientSecret: demo!123
+    defaultBucket: invoices
