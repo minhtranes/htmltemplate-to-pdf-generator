@@ -33,6 +33,14 @@ public class ObjectStorageService {
     @Autowired
     private ObjectStorageProperties props;
 
+    public boolean bucketExists(final String bucket) throws Exception {
+
+        BucketExistsArgs ber = BucketExistsArgs.builder()
+                .bucket(bucket)
+                .build();
+        return minioClient().bucketExists(ber);
+    }
+
     private MinioClient minioClient() {
 
         synchronized (locker) {
