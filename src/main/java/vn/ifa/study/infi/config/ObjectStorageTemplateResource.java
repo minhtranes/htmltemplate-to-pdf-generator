@@ -1,25 +1,28 @@
 package vn.ifa.study.infi.config;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 
 import org.thymeleaf.templateresource.ITemplateResource;
 
 import lombok.extern.slf4j.Slf4j;
-import vn.ifa.study.infi.service.ObjectStorageService;
+import vn.ifa.study.oo.ObjectStorage;
+import vn.ifa.study.oo.StoredObject;
 
 @Slf4j
 public class ObjectStorageTemplateResource implements ITemplateResource, Serializable {
     private static final long serialVersionUID = 786859883149542189L;
-    private final ObjectStorageService objectStorageService;
     private final String bucket;
     private final String key;
 
-    public ObjectStorageTemplateResource(final ObjectStorageService objectStorageService, final String bucket,
-            final String key) {
+    public ObjectStorageTemplateResource(final String bucket, final String key) {
 
-        this.objectStorageService = objectStorageService;
         this.bucket = bucket;
         this.key = key;
     }
@@ -28,7 +31,7 @@ public class ObjectStorageTemplateResource implements ITemplateResource, Seriali
     public boolean exists() {
 
         try {
-            return objectStorageService.bucketExists(bucket);
+            return ObjectStorage.createBucket(bucket);
         }
         catch (Exception e) {
             log.error("Exception when checking bucket existence {}", bucket, e);
@@ -54,8 +57,19 @@ public class ObjectStorageTemplateResource implements ITemplateResource, Seriali
     @Override
     public Reader reader() throws IOException {
 
-        // TODO Auto-generated method stub
-        return null;
+        StoredObject o = StoredObject.builder()
+                .bucket(bucket)
+                .key(key)
+                .build();
+        StoredObject object = ObjectStorage.getObject(o, null);
+
+        if (object == null) {
+            return BufferedReader.nullReader();
+        }
+
+        InputStream inputStream = new ByteArrayInputStream(o.getSmallContent());
+
+        return new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
     }
 
     @Override
