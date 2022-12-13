@@ -6,15 +6,9 @@ import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.templateresolver.AbstractConfigurableTemplateResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 
-import vn.ifa.study.infi.service.ObjectStorageService;
-
 public class ObjectStorageTemplateResolver extends AbstractConfigurableTemplateResolver {
 
-    private final ObjectStorageService objectStorageService;
-
-    public ObjectStorageTemplateResolver(final ObjectStorageService objectStorageService, final String bucket) {
-
-        this.objectStorageService = objectStorageService;
+    public ObjectStorageTemplateResolver() {
 
     }
 
@@ -30,7 +24,7 @@ public class ObjectStorageTemplateResolver extends AbstractConfigurableTemplateR
         String bucket = resourceName.substring(0, resourceName.indexOf("/"));
         String key = resourceName.substring(resourceName.indexOf("/"));
 
-        return new ObjectStorageTemplateResource(objectStorageService, bucket, key);
+        return new ObjectStorageTemplateResource(bucket, key);
     }
 
 }

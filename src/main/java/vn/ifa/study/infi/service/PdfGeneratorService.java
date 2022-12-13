@@ -18,10 +18,9 @@ public class PdfGeneratorService {
     @Autowired
     private PdfGeneratorProperties props;
 
-    public File generate(final String htmlContent, final String tempSubDir, final String filename)
-            throws FileNotFoundException {
+    public File generate(final String htmlContent, final String filePath) throws FileNotFoundException {
 
-        File pdfDest = Path.of(props.getTempDir(), tempSubDir, filename)
+        File pdfDest = Path.of(props.getTempDir(), filePath)
                 .toFile();
 
         if (!pdfDest.getParentFile()
