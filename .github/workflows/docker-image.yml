@@ -33,7 +33,8 @@ jobs:
       - name: Checkout common-technique
         uses: actions/checkout@v2
         with:
-            repository: minhtranes/common-technique
+            # https://github.com/minhtranes/common-technique.git
+            repository: minhtranes/common-technique.git
             ref: main
 
       - name: Build common-technique
