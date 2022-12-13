@@ -30,23 +30,14 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Checkout common-technique
-        uses: actions/checkout@v2
-        with:
-            # https://github.com/minhtranes/common-technique.git
-            token: ${{secrets.PERSONAL_ACCESS_TOKEN_FOR_SYSTEM}}
-            repository: minhtranes/common-technique
-            ref: main
-
-      - name: Build common-technique
-        working-directory: ./common-technique
-        run: mvn clean install -Dmaven.test.skip=true
 
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Build with Maven
         run: mvn clean package -Dmaven.test.skip=true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1

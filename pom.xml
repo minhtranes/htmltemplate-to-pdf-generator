@@ -9,14 +9,14 @@
     </parent>
     <groupId>vn.ifa.study</groupId>
     <artifactId>htmltemplate-to-pdf-generator</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>htmltemplate-to-pdf-generator</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
         <version.infinispan>14.0.3.Final</version.infinispan>
         <itext.pdfhtml.version>4.0.4</itext.pdfhtml.version>
-        <common-technique.version>0.0.1</common-technique.version>
+        <common-technique.version>0.0.3</common-technique.version>
     </properties>
     <dependencies>
         <dependency>
@@ -80,6 +80,13 @@
             <name>iText Repository - releases</name>
             <url>https://repo.itextsupport.com/releases</url>
         </repository>
+        <repository>
+            <id>common-technique</id>
+            <url>https://maven.pkg.github.com/minhtranes/common-technique</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <build>
@@ -119,5 +126,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
