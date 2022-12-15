@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import vn.ifa.study.infi.model.Invoice;
 import vn.ifa.study.infi.model.Invoice.Address;
@@ -16,8 +17,8 @@ import vn.ifa.study.infi.model.Invoice.InvoiceItem;
 @Controller
 public class InvoiceController {
 
-    @GetMapping("invoice")
-    public String invoice(final Model model) {
+    @GetMapping("/try/{template}")
+    public String invoice(final Model model, @PathVariable(required = true, name = "template") final String template) {
 
         Invoice invoice = Invoice.builder()
                 .id("12345678")
@@ -49,6 +50,6 @@ public class InvoiceController {
                 .build();
 
         model.addAttribute("invoice", invoice);
-        return "invoice";
+        return template;
     }
 }
