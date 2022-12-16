@@ -11,7 +11,6 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -35,25 +34,19 @@ public class HtmlDocumentService {
         variables.entrySet()
                 .forEach(e -> context.setVariable(e.getKey(), e.getValue()));
 
-        return templateEngine.process("templates/" + template, context);
+        return templateEngine.process(template, context);
     }
 
     @PostConstruct
     void initialize() {
 
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setResolvablePatterns(Set.of("templates/invoice*"));
-
         ObjectStorageTemplateResolver objectStorageTemplateResolver = new ObjectStorageTemplateResolver();
         objectStorageTemplateResolver.setSuffix(".html");
         objectStorageTemplateResolver.setTemplateMode(TemplateMode.HTML);
-        objectStorageTemplateResolver.setResolvablePatterns(Set.of("templates/*"));
+        objectStorageTemplateResolver.setResolvablePatterns(Set.of("*"));
 
         templateEngine = new SpringTemplateEngine();
-        templateEngine.addTemplateResolver(templateResolver);
-        templateEngine.addTemplateResolver(objectStorageTemplateResolver);
+        templateEngine.setTemplateResolver(objectStorageTemplateResolver);
         templateEngine.addDialect(new Java8TimeDialect());
     }
 

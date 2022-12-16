@@ -29,6 +29,7 @@ import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
 import lombok.extern.slf4j.Slf4j;
 import vn.ifa.study.infi.model.RemoteFile;
+import vn.ifa.study.infi.properties.ObjectStoreProperties;
 import vn.ifa.study.infi.service.HtmlDocumentService;
 import vn.ifa.study.infi.service.PdfGeneratorService;
 import vn.ifa.study.oo.ObjectStorage;
@@ -46,6 +47,9 @@ public class ApiController {
     private PdfGeneratorService generatorService;
     @Autowired
     private ObjectMapper mapper;
+
+    @Autowired
+    private ObjectStoreProperties templateStoreProperties;
 
     @PostMapping("{template}")
     public RemoteFile generate(
@@ -84,7 +88,9 @@ public class ApiController {
 
         log.info("Generate pdf file for content id [{}] to file [{}]", requestId, filename);
 
-        String htmlDocument = documentService.generate(template, variables);
+        String templateUrl = String
+                .join("/", templateStoreProperties.getBucket(), templateStoreProperties.getKeyPrefix(), template);
+        String htmlDocument = documentService.generate(templateUrl, variables);
         File pdfFile = generatorService.generate(htmlDocument, filePath);
         long fileSize = Files.size(pdfFile.toPath());
 

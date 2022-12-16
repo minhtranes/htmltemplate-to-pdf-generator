@@ -2,9 +2,6 @@ server.port: ${PORT:8080}
 springdoc:
     api-docs.path: /docs
     swagger-ui.path: /docs-ui
-template:
-    variableMappings:
-        invoice: invoice
 pdf-generator:
     temp-dir: ./data/temp-pdfs
 object-storage:
@@ -12,3 +9,12 @@ object-storage:
     clientKey: ${OBJECT_STORAGE_CLIENT_KEY:demo}
     clientSecret: ${OBJECT_STORAGE_CLIENT_SECRET:demo!123}
     defaultBucket: ${OBJECT_STORAGE_CLIENT_DEFAULT_BUCKET:generated-pdfs}
+templates:
+    storage:
+        bucket: templates
+        key-prefix: main
+        keyPrefixTemplate: false
+    test-storage:
+        bucket: templates
+        key-prefix: test
+        keyPrefixTemplate: false
