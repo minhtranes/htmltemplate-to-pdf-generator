@@ -67,7 +67,11 @@ public class ObjectStorageTemplateResource implements ITemplateResource, Seriali
             return BufferedReader.nullReader();
         }
 
-        InputStream inputStream = new ByteArrayInputStream(o.getSmallContent());
+        log.info("Get template {} from storage {}", object.getKey(), object.getBucket());
+
+        byte[] smallContent = o.getSmallContent();
+
+        InputStream inputStream = new ByteArrayInputStream(smallContent);
 
         return new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
     }

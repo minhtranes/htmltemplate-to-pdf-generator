@@ -5,11 +5,11 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,6 +21,7 @@ import vn.ifa.study.infi.config.ObjectStorageTemplateResolver;
 @Service
 public class HtmlDocumentService {
 
+    @Autowired
     private TemplateEngine templateEngine;
 
     public String generate(final String template, final Map<String, JsonNode> variables) {
@@ -44,8 +45,8 @@ public class HtmlDocumentService {
         objectStorageTemplateResolver.setSuffix(".html");
         objectStorageTemplateResolver.setTemplateMode(TemplateMode.HTML);
         objectStorageTemplateResolver.setResolvablePatterns(Set.of("*"));
+        objectStorageTemplateResolver.setCacheable(false);
 
-        templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(objectStorageTemplateResolver);
         templateEngine.addDialect(new Java8TimeDialect());
     }

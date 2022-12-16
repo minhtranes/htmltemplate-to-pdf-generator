@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import vn.ifa.study.infi.properties.ObjectStoreProperties;
@@ -37,18 +36,17 @@ public class TemplateController {
 
     private final Map<String, JsonNode> testSamples = new HashMap<>();
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @PostMapping("import/{templateName}")
     public boolean importTemplate(
         @PathVariable(name = "templateName", required = true) final String templateName,
         @RequestParam(name = "folder", required = false) final String folder,
         @RequestBody final String content) {
 
+        String url = folder == null ? String.join("/", templateStoreProperties.getKeyPrefix(), templateName)
+                : String.join("/", templateStoreProperties.getKeyPrefix(), folder, templateName);
         StoredObject o = StoredObject.builder()
                 .bucket(templateStoreProperties.getBucket())
-                .key(String.join("/", templateStoreProperties.getKeyPrefix(), folder, templateName))
+                .key(url + ".html")
                 .build();
         ObjectStorage.putObject(o, new ByteArrayInputStream(content.getBytes()));
         return true;
@@ -72,6 +70,7 @@ public class TemplateController {
         @PathVariable(name = "templateName", required = true) final String templateName,
         @RequestBody final String content) {
 
+        log.debug("TEMPLATE: {}", content);
         String templateUrl = String.join("/", testTemplateStoreProperties.getKeyPrefix(), templateName);
         byte[] bytes = content.getBytes();
         StoredObject o = StoredObject.builder()
